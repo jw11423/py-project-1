@@ -1,6 +1,6 @@
 if '__file__' in globals():
     import os, sys
-    sys.path.append(os.path.join(os.path.dirname(__file__), '/home/jwkim/dev/venv03/selfpkg'))
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../selfpkg'))
 
 from statistics import variance
 import numpy as np
