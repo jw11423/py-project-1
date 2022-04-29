@@ -20,3 +20,5 @@ print(x)
 print(W)
 print(y)
 
+## 에러 이유를 모르겠다
+
