@@ -106,9 +106,9 @@ class Variable:
                     if x.creator is not None:
                         add_func(x.creator)
 
-                if not retain_grad:
-                    for y in f.outputs:
-                        y().grad = None  # y is weakref
+            if not retain_grad:
+                for y in f.outputs:
+                    y().grad = None  # y is weakref
 
     def reshape(self, *shape):
         if len(shape) == 1 and isinstance(shape[0], (tuple, list)):
@@ -189,7 +189,7 @@ def add(x0, x1):
 
 class Mul(Function):
     def forward(self, x0, x1):
-        self.x0_shape, self.x1_shape = x0.shape, x1.shape
+        # self.x0_shape, self.x1_shape = x0.shape, x1.shape
         y = x0 * x1
         return y
 
@@ -202,9 +202,9 @@ class Mul(Function):
         x0, x1 = self.inputs
         gx0 = gy * x1
         gx1 = gy * x0
-        if self.x0_shape != self.x1_shape:
-            gx0 = dezero.functions.sum_to(gx0, self.x0_shape)
-            gx1 = dezero.functions.sum_to(gx1, self.x1_shape)
+        if x0.shape != x1.shape:
+            gx0 = dezero.functions.sum_to(gx0, x0.shape)
+            gx1 = dezero.functions.sum_to(gx1, x1.shape)
 
         return gx0, gx1
 
@@ -252,7 +252,7 @@ def rsub(x0, x1):
 
 class Div(Function):
     def forward(self, x0, x1):
-        self.x0_shape, self.x1_shape = x0.shape, x1.shape
+        # self.x0_shape, self.x1_shape = x0.shape, x1.shape
         y = x0 / x1
         return y
     
