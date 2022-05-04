@@ -1,4 +1,3 @@
-from turtle import forward
 from dezero.core import Parameter
 import weakref
 
