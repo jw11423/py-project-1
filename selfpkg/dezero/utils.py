@@ -1,5 +1,9 @@
 import os
 import subprocess
+import urllib.request
+import numpy as np
+from dezero import as_variable
+from dezero import Variable
 
 # =============================================================================
 # Visualize for computational graph
@@ -13,7 +17,9 @@ def _dot_var(v, verbose=False):
         if v.name is not None:
             name += ': '
         name += str(v.shape) + ' ' + str(v.type)
+
     return dot_var.format(id(v), name)
+
 
 def _dot_func(f):
     dot_func = '{} [label = "{}" , color=lightblue, style=filled, shape=box]\n'
@@ -26,7 +32,8 @@ def _dot_func(f):
         txt += dot_edge.format(id(f), id(y()))
     return txt
 
-def get_dot_graph(output, verbose=False):
+
+def get_dot_graph(output, verbose=True):
     """Generates a graphviz DOT text of a computational graph.
 
     Build a graph of functions and variables backward-reachable from the
@@ -50,7 +57,7 @@ def get_dot_graph(output, verbose=False):
     def add_func(f):
         if f not in seen_set:
             funcs.append(f)
-            funcs.sort(key=lambda x: x.generation)
+            #funcs.sort(key=lambda x: x.generation)
             seen_set.add(f)
     
     add_func(output.creator)
