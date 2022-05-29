@@ -1,7 +1,8 @@
+from os import pread
 import numpy as np
 # import dezero
 from dezero import utils, cuda
-from dezero.core import Function, as_variable
+from dezero.core import Function, Variable, as_array, as_variable
 
 # =============================================================================
 # Basic functions: sin / cos / tanh / exp / log
@@ -390,3 +391,16 @@ class Clip(Function):
 
 def clip(x, x_min, x_max):
     return Clip(x_min, x_max)(x)
+
+
+# =============================================================================
+# accuracy / dropout / batch_norm / embed_id
+# =============================================================================
+
+def accuracy(y, t):
+    y, t = as_variable(y), as_variable(t)
+
+    pred = y.data.argmax(axis=1).reshape(t.shape)
+    result = (pred == t.data)
+    acc = result.mean()
+    return Variable(as_array(acc))
